@@ -104,7 +104,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
     }
 
     private void showChatScreen() {
-        JLabel titleLab = new JLabel(client.getName());
+        JLabel titleLab = new JLabel("Welcome: " + client.getName());
         titleLab.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
         titleLab.setForeground(Color.yellow);
         JPanel titlePan = new JPanel();
@@ -135,6 +135,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         listModel = new DefaultListModel();
         clientsList = new JList(listModel);
         clientsList.addMouseListener(this);
+        clientsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
         clientsList.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
         clientsList.setOpaque(true);
         clientsList.setBackground(Color.gray);
@@ -181,7 +182,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent lsEve) {
+    public void mouseClicked(MouseEvent clickEvent) {
         int selection = clientsList.getSelectedIndex();
         if (selection >= 0) {
             Friend friend = (Friend) friends.get(selection);
