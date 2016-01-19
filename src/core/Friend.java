@@ -54,6 +54,9 @@ public class Friend implements ActionListener, Serializable{
         messageTf = new JTextField("");
         messageTf.addActionListener(this);
         messageTf.setCaretColor(Color.blue);
+        JButton sendMsgBtn = new JButton("Send");
+        sendMsgBtn.addActionListener(this);
+        botPan.add(sendMsgBtn, "East");
         botPan.add(messageTf);
         
         friendFrame.add(centPan,"Center");
@@ -70,29 +73,26 @@ public class Friend implements ActionListener, Serializable{
     }
     
     @Override
-    public void actionPerformed(ActionEvent axnEve){
-        Object obj = axnEve.getSource();
-        if(obj==messageTf){
-            if(!messageTf.getText().equals("")) {
-                try {
-                    InetAddress adrs = InetAddress.getByName("localhost");
-                    
+    public void actionPerformed(ActionEvent axnEve) {
+        if (!messageTf.getText().equals("")) {
+            try {
+                InetAddress adrs = InetAddress.getByName("localhost");
+
 //                        ChatScreen.objWriter.writeObject(Home.client);
-                        ChatScreen.objWriter.writeObject(this);
-                        ChatScreen.objWriter.writeObject(new String(messageTf.getText()));
-                        System.out.println("Message Sent " +messageTf.getText());
-                        chatTA.append("\nYou: " + messageTf.getText() + "");
-                        chatTA.setCaretPosition(chatTA.getText().length());
-                    
-                } catch (UnknownHostException unhoExc) {
-                    JOptionPane.showMessageDialog(null, "Server IP is not valid. Restart App");
-                } catch(IOException ioExc){
-                    friendFrame.setVisible(false);
-                    friendFrame.dispose();
-                    JOptionPane.showMessageDialog(friendFrame, "Your Friend Went Offline");
-                }
-                messageTf.setText("");
+                ChatScreen.objWriter.writeObject(this);
+                ChatScreen.objWriter.writeObject(new String(messageTf.getText()));
+                System.out.println("Message Sent " + messageTf.getText());
+                chatTA.append("\nYou: " + messageTf.getText() + "");
+                chatTA.setCaretPosition(chatTA.getText().length());
+
+            } catch (UnknownHostException unhoExc) {
+                JOptionPane.showMessageDialog(null, "Server IP is not valid. Restart App");
+            } catch (IOException ioExc) {
+                friendFrame.setVisible(false);
+                friendFrame.dispose();
+                JOptionPane.showMessageDialog(friendFrame, "Your Friend Went Offline");
             }
+            messageTf.setText("");
         }
     }
 }

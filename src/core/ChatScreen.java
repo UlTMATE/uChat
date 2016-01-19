@@ -125,6 +125,10 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         messageTf.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
         messageTf.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.darkGray));
         botPan.add(messageTf, "Center");
+        JButton sendMsgBtn = new JButton("Send");
+        sendMsgBtn.addActionListener(this);
+        botPan.add(sendMsgBtn, "East");
+        
         JScrollPane jsp = new JScrollPane(globalTA);
         jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.darkGray));
         globalChatPan.add(jsp, "Center");
@@ -168,16 +172,13 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent axnEve) {
-        Object obj = axnEve.getSource();
-        if (obj == messageTf) {
-            if (!messageTf.getText().equals("")) {
-                try {
-                    objWriter.writeObject(new String(messageTf.getText()));
-                } catch (IOException ioExc) {
-                    JOptionPane.showMessageDialog(Home.homeFrame, "Server Went Offline");
-                }
-                messageTf.setText("");
+        if (!messageTf.getText().equals("")) {
+            try {
+                objWriter.writeObject(new String(messageTf.getText()));
+            } catch (IOException ioExc) {
+                JOptionPane.showMessageDialog(Home.homeFrame, "Server Went Offline");
             }
+            messageTf.setText("");
         }
     }
 
