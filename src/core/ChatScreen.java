@@ -126,7 +126,11 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         messageTf.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.darkGray));
         botPan.add(messageTf, "Center");
         JButton sendMsgBtn = new JButton("Send");
+        sendMsgBtn.setFont(new Font(Font.SERIF, Font.BOLD, 14));
+        sendMsgBtn.setBackground(new Color(0,102,51));
+        sendMsgBtn.setForeground(Color.white);
         sendMsgBtn.addActionListener(this);
+        sendMsgBtn.addMouseListener(this);
         botPan.add(sendMsgBtn, "East");
         
         JScrollPane jsp = new JScrollPane(globalTA);
@@ -191,6 +195,26 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
                 friend.showFriendScreen();
             }
             friend.friendFrame.setVisible(true);
+        }
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent enterEvent) {
+        Object obj = enterEvent.getSource();
+        if (obj instanceof JButton) {
+            JButton btn = (JButton) obj;
+            btn.setBackground(new Color(10, 130, 0));
+            btn.setForeground(Color.black);
+        }
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent exitEvent) {
+        Object obj = exitEvent.getSource();
+        if (obj instanceof JButton) {
+            JButton btn = (JButton) obj;
+            btn.setBackground(new Color(0, 102, 51));
+            btn.setForeground(Color.white);
         }
     }
 }

@@ -10,7 +10,7 @@ import javax.swing.*;
 import java.net.*;
 import java.io.*;
 
-public class Friend implements ActionListener, Serializable{
+public class Friend extends MouseAdapter implements ActionListener, Serializable{
     
     private final String NAME;
     private final int PORT;
@@ -55,7 +55,10 @@ public class Friend implements ActionListener, Serializable{
         messageTf.addActionListener(this);
         messageTf.setCaretColor(Color.blue);
         JButton sendMsgBtn = new JButton("Send");
+        sendMsgBtn.setBackground(new Color(0,102,51));
+        sendMsgBtn.setForeground(Color.white);
         sendMsgBtn.addActionListener(this);
+        sendMsgBtn.addMouseListener(this);
         botPan.add(sendMsgBtn, "East");
         botPan.add(messageTf);
         
@@ -94,5 +97,19 @@ public class Friend implements ActionListener, Serializable{
             }
             messageTf.setText("");
         }
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent enterEvent) {
+        JButton btn = (JButton)enterEvent.getSource();
+        btn.setBackground(new Color(10,130,0));
+        btn.setForeground(Color.black);
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent exitEvent) {
+        JButton btn = (JButton)exitEvent.getSource();
+        btn.setBackground(new Color(0, 102, 51));
+        btn.setForeground(Color.white);
     }
 }
