@@ -105,7 +105,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
 
     private void showChatScreen() {
         JLabel titleLab = new JLabel("Welcome: " + client.getName());
-        titleLab.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+        titleLab.setFont(new Font(Font.SERIF, Font.BOLD, 15));
         titleLab.setForeground(Color.yellow);
         JPanel titlePan = new JPanel();
         titlePan.setBackground(Color.darkGray);
@@ -114,7 +114,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         JPanel globalChatPan = new JPanel(new BorderLayout());
         globalTA = new JTextArea("");
         globalTA.setEditable(false);
-        globalTA.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        globalTA.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         globalTA.setLineWrap(true);
 
         JPanel botPan = new JPanel(new BorderLayout());
@@ -122,7 +122,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         messageTf = new JTextField("");
         messageTf.addActionListener(this);
         messageTf.setCaretColor(Color.red);
-        messageTf.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 16));
+        messageTf.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
         messageTf.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.darkGray));
         botPan.add(messageTf, "Center");
         JButton sendMsgBtn = new JButton("Send");
