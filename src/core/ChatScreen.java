@@ -8,7 +8,6 @@ import static core.Home.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-//import javax.swing.event.*;
 import java.net.*;
 import java.io.*;
 import java.util.*;
@@ -27,13 +26,9 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
 
     public ChatScreen() {
         try {
-            
             InetAddress adrs = InetAddress.getByName(serverIp);
             Socket sock = new Socket(adrs, 8085);
-
-//            System.out.println("accept");
             objWriter = new ObjectOutputStream(sock.getOutputStream());
-//                    System.out.println((objWriter==null)+ " "+ (objReader==null));
             objWriter.writeObject(Home.client);
             new Thread(() -> {
                 try {
@@ -45,9 +40,8 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
                         System.out.println("Reading Object");
                         if (obj instanceof String) {
                             System.out.println("A global text received -> " + obj.toString());
-                            ChatScreen.globalTA.append("\n\n" + obj.toString());
+                            ChatScreen.globalTA.append(obj.toString() + "\n");
                             ChatScreen.globalTA.setCaretPosition(ChatScreen.globalTA.getText().length());
-//                            System.out.println("Written String");
                             Home.homeFrame.setVisible(true);
                         } else if (obj instanceof Client) {
                             Client receivedFriend = (Client) obj;
@@ -56,21 +50,18 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
                             ListIterator liter = ChatScreen.friends.listIterator();
                             while (liter.hasNext()) {
                                 Friend temp = (Friend) liter.next();
-//                                System.out.println(receivedFriend.getName() + " " + temp.getName());
-//                                System.out.println(receivedFriend.getServerPortNumber() + " " + temp.getServerPortNumber());
                                 if ((receivedFriend.getName().equals(temp.getName())) && receivedFriend.getServerPortNumber() == temp.getServerPortNumber()) {
                                     index = ChatScreen.friends.indexOf(temp);
                                     break;
                                 }
                             }
-                            System.out.println(index);
                             if (index != -1) {
                                 String msg = (String) objReader.readObject();
                                 Friend friend = (Friend) ChatScreen.friends.get(index);
                                 if (!friend.isActive()) {
                                     friend.showFriendScreen();
                                 }
-                                friend.chatTA.append("\n\n" + friend.getName() + ": " + msg);
+                                friend.chatTA.append(friend.getName() + ": " + msg + "\n");
                                 friend.chatTA.setCaretPosition(friend.chatTA.getText().length());
                                 friend.friendFrame.setVisible(true);
                             }
@@ -127,12 +118,12 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
         botPan.add(messageTf, "Center");
         JButton sendMsgBtn = new JButton("Send");
         sendMsgBtn.setFont(new Font(Font.SERIF, Font.BOLD, 14));
-        sendMsgBtn.setBackground(new Color(0,102,51));
+        sendMsgBtn.setBackground(new Color(0, 102, 51));
         sendMsgBtn.setForeground(Color.white);
         sendMsgBtn.addActionListener(this);
         sendMsgBtn.addMouseListener(this);
         botPan.add(sendMsgBtn, "East");
-        
+
         JScrollPane jsp = new JScrollPane(globalTA);
         jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.darkGray));
         globalChatPan.add(jsp, "Center");
@@ -170,7 +161,6 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
             while (iter.hasNext()) {
                 listModel.addElement(((Friend) iter.next()).getName());
             }
-            System.out.println("setup clients pan complete");
         }
     }
 
@@ -184,6 +174,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
             }
             messageTf.setText("");
         }
+        messageTf.requestFocus();
     }
 
     @Override
@@ -197,7 +188,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
             friend.friendFrame.setVisible(true);
         }
     }
-    
+
     @Override
     public void mouseEntered(MouseEvent enterEvent) {
         Object obj = enterEvent.getSource();
@@ -207,7 +198,7 @@ public class ChatScreen extends MouseAdapter implements ActionListener {
             btn.setForeground(Color.black);
         }
     }
-    
+
     @Override
     public void mouseExited(MouseEvent exitEvent) {
         Object obj = exitEvent.getSource();

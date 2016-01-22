@@ -13,11 +13,8 @@ public class MainServer {
     ArrayList clients;
     final int PORT = 8085;
     ServerSocket serverSocket = null;
-    //Socket socket = null;
 
-//    ObjectInputStream objReader;
     ObjectOutputStream objWriter;
-//    Object clientObj;
     Object input;
 
     public MainServer() {
@@ -30,21 +27,16 @@ public class MainServer {
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server Started");
             while (true) {
-//                System.out.println("wait");
-              Socket  socket = serverSocket.accept();
-//              System.out.println("New Client");
+                Socket socket = serverSocket.accept();
                 new Thread(() -> {
-                    Object clientObj=null;
-                    ObjectInputStream objReader=null;
+                    Object clientObj = null;
+                    ObjectInputStream objReader = null;
                     try {
                         objReader = new ObjectInputStream(socket.getInputStream());
                         clientObj = objReader.readObject();
-                    } catch (IOException ioExc) {
-                        ioExc.printStackTrace();
-                    } catch (ClassNotFoundException cnfExc) {
-                      
+                    } catch (IOException | ClassNotFoundException ioExc) {
                     }
-                    Client clToAdd = (Client)clientObj;
+                    Client clToAdd = (Client) clientObj;
                     clToAdd.setServerPortNumber(socket.getPort());
                     clToAdd.setSocket(socket);
                     try {
@@ -53,7 +45,7 @@ public class MainServer {
                         ioExc.printStackTrace();
                     }
                     clients.add(clToAdd);
-                    System.out.println("Client added : "+clToAdd.getName() + ", " +clToAdd.getServerPortNumber());
+                    System.out.println("Client added : " + clToAdd.getName() + ", " + clToAdd.getServerPortNumber());
                     updateClients();
                     while (true) {
                         try {
@@ -67,11 +59,10 @@ public class MainServer {
                                 while (clientIterator.hasNext()) {
                                     Client client = (Client) clientIterator.next();
                                     try {
-//                                        InetAddress adrs = InetAddress.getByName("localhost");
                                         objWriter = client.getSocketOutputStream();
-                                            objWriter.writeObject(new String(((Client) clientObj).getName() + ": " + input));
-                                            System.out.println("Written on " + ((Client) client).getName());
-                                        
+                                        objWriter.writeObject(new String(((Client) clientObj).getName() + ": " + input));
+                                        System.out.println("Written on " + ((Client) client).getName());
+
                                     } catch (UnknownHostException unhoExc) {
                                         System.out.println("Exception in Update Client unho");
                                         unhoExc.printStackTrace();
@@ -95,19 +86,13 @@ public class MainServer {
                                         break;
                                     }
                                 }
-                                System.out.println("Index is " +index);
+                                System.out.println("Index is " + index);
                                 if (index != -1) {
                                     String field = (String) objReader.readObject();
                                     System.out.println("Read txtfield " + field);
-//                                    InetAddress adrs = InetAddress.getByName("localhost");
-                                    objWriter = ((Client)clients.get(index)).getSocketOutputStream();
-                                        objWriter.writeObject(clToAdd);
-                                        objWriter.writeObject(field);
-                                    
-//                                    objWriter = clToAdd.getSocketOutputStream();
-//                                        objWriter.writeObject(clToAdd);
-//                                        objWriter.writeObject(field);
-                                    
+                                    objWriter = ((Client) clients.get(index)).getSocketOutputStream();
+                                    objWriter.writeObject(clToAdd);
+                                    objWriter.writeObject(field);
                                 }
                             }
                         } catch (IOException ioExc) {
@@ -116,16 +101,14 @@ public class MainServer {
                             updateClients();
                             ioExc.printStackTrace();
                             break;
-                        } catch(ClassNotFoundException cnfExc){
-                            
+                        } catch (ClassNotFoundException cnfExc) {
+
                         }
                     }
                 }).start();
 
             }
         } catch (IOException ioExc) {
-//            clients.remove(clientObj);
-//            updateClients();
             ioExc.printStackTrace();
         }
     }
@@ -137,14 +120,9 @@ public class MainServer {
                 ArrayList tempClientsList = new ArrayList(clients);
                 Client client = (Client) clientIterator.next();
                 try {
-                    InetAddress adrs = InetAddress.getByName("localhost");
-                   
-                        objWriter = client.getSocketOutputStream();
-                        
-                        tempClientsList.remove(client);
-                        objWriter.writeObject(tempClientsList);
-
-                    
+                    objWriter = client.getSocketOutputStream();
+                    tempClientsList.remove(client);
+                    objWriter.writeObject(tempClientsList);
                 } catch (UnknownHostException unhoExc) {
                     System.out.println("Exception in Update Client unho");
                     unhoExc.printStackTrace();
